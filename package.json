@@ -13,6 +13,7 @@
     "@nrwl/jest": "14.4.3",
     "@nrwl/js": "14.4.3",
     "@nrwl/linter": "14.4.3",
+    "@nrwl/schematics": "^8.12.11",
     "@nrwl/workspace": "14.4.3",
     "@types/jest": "27.4.1",
     "@types/node": "16.11.7",
