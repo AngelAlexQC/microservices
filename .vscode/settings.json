@@ -1,0 +1,9 @@
+{
+    // Use prettier for formatting
+    "editor.formatOnSave": true,
+    // Use prettier 
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+}
