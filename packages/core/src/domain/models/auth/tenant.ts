@@ -4,7 +4,7 @@ export enum TenantStatus {
     Deleted = 'Deleted',
 }
 
-export interface Tenant {
+export default interface Tenant {
     name: string;
     description: string;
     status: TenantStatus;

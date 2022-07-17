@@ -1,11 +1,11 @@
-import { Role } from "./role";
+import Role from "./role";
 
-export interface Name {
+export default interface Name {
     first: string;
     last: string;
 }
 
-export interface User {
+export default interface User {
     name: Name | string;
     email: string;
     password: string | null;

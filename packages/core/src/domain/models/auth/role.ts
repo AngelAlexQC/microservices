@@ -1,6 +1,6 @@
-import { Permission } from "./permission";
+import Permission from "./permission";
 
-export interface Role {
+export default interface Role {
     name: string;
     description: string;
     permissions: Permission[];

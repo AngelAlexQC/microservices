@@ -1,6 +1,6 @@
 import { CONTEXT } from "../../contexts/contexts";
 
-export interface Permission {
+export default interface Permission {
     name: string;
     description: string;
     context: CONTEXT;
