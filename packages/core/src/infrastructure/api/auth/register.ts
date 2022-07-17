@@ -1,4 +1,4 @@
-import { isProduction } from 'config/auth';
+import { isProduction } from 'config/common';
 import { register } from 'domain/interactors/auth/register';
 import { Request, Response } from 'express';
 import RoleMongo from 'infrastructure/database/mongo/role-mongo';

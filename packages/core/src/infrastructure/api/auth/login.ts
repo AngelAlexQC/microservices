@@ -1,4 +1,4 @@
-import { isProduction } from 'config/auth';
+import { isProduction } from 'config/common';
 import { login } from 'domain/interactors/auth/login';
 import { Request, Response } from 'express';
 import SessionMongo from 'infrastructure/database/mongo/session-mongo';

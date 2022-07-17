@@ -1,4 +1,5 @@
-import { isProduction, mongoAuthDbName, mongoUrl } from 'config/auth';
+import { mongoUrl, mongoAuthDbName } from 'config/auth';
+import { isProduction } from 'config/common';
 import AbstractRepository from 'domain/repositories/abstract.repository';
 import mongoose, { Model, Schema, model } from 'mongoose';
 
