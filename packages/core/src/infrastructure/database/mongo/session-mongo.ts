@@ -1,6 +1,6 @@
-import Session from 'domain/models/auth/session';
-import SessionRepository from 'domain/repositories/auth/session.repository';
 import { Schema } from 'mongoose';
+import SessionRepository from '../../../domain/repositories/auth/session.repository';
+import Session from '../../../domain/models/auth/session';
 import BaseMongo from './base-mongo';
 
 export default class SessionMongo

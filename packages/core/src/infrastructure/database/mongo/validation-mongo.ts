@@ -1,5 +1,5 @@
-import User from 'domain/models/auth/user';
-import ValidationRepository from 'domain/repositories/auth/validation.repository';
+import User from '../../../domain/models/auth/user';
+import ValidationRepository from '../../../domain/repositories/auth/validation.repository';
 import UserMongo from './user-mongo';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
@@ -28,7 +28,7 @@ export default class ValidationMongo
 
   async validateJWT(jwtToken: string): Promise<boolean> {
     try {
-      const decoded = jwt.verify(jwtToken, this.secret);
+      jwt.verify(jwtToken, this.secret);
       return true;
     } catch (error) {
       return false;

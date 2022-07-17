@@ -1,5 +1,5 @@
-import User, { Name } from 'domain/models/auth/user';
-import UserRepository from 'domain/repositories/auth/user.repository';
+import User, { Name } from '../../../domain/models/auth/user';
+import UserRepository from '../../../domain/repositories/auth/user.repository';
 import { Schema } from 'mongoose';
 import BaseMongo from './base-mongo';
 

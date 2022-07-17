@@ -1,7 +1,8 @@
-import User, { Name } from 'domain/models/auth/user';
-import RoleRepository from 'domain/repositories/auth/role.repository';
-import UserRepository from 'domain/repositories/auth/user.repository';
-import ValidationRepository from 'domain/repositories/auth/validation.repository';
+import User, { Name } from "../../models/auth/user";
+import RoleRepository from "../../repositories/auth/role.repository";
+import UserRepository from "../../repositories/auth/user.repository";
+import ValidationRepository from "../../repositories/auth/validation.repository";
+
 
 export const createNewUser =
   (

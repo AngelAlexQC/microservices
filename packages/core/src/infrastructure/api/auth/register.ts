@@ -1,10 +1,10 @@
-import { isProduction } from 'config/common';
-import { register } from 'domain/interactors/auth/register';
 import { Request, Response } from 'express';
-import RoleMongo from 'infrastructure/database/mongo/role-mongo';
-import SessionMongo from 'infrastructure/database/mongo/session-mongo';
-import UserMongo from 'infrastructure/database/mongo/user-mongo';
-import ValidationMongo from 'infrastructure/database/mongo/validation-mongo';
+import { isProduction } from '../../../config/common';
+import register from '../../../domain/interactors/auth/register';
+import RoleMongo from '../../database/mongo/role-mongo';
+import SessionMongo from '../../database/mongo/session-mongo';
+import UserMongo from '../../database/mongo/user-mongo';
+import ValidationMongo from '../../database/mongo/validation-mongo';
 
 export default async function registerHandler(req: Request, res: Response) {
   const userRepository = new UserMongo();

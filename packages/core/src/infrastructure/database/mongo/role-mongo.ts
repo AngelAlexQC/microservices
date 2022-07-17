@@ -1,6 +1,6 @@
-import { PERMISSIONS } from 'domain/models/auth/permission';
-import Role from 'domain/models/auth/role';
-import RoleRepository from 'domain/repositories/auth/role.repository';
+import { PERMISSIONS } from '../../../domain/models/auth/permission';
+import Role from '../../../domain/models/auth/role';
+import RoleRepository from '../../../domain/repositories/auth/role.repository';
 import { Schema } from 'mongoose';
 import BaseMongo from './base-mongo';
 

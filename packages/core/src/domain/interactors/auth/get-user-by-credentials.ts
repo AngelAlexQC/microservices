@@ -1,6 +1,6 @@
-import User from 'domain/models/auth/user';
-import UserRepository from 'domain/repositories/auth/user.repository';
-import ValidationRepository from 'domain/repositories/auth/validation.repository';
+import User from '../../models/auth/user';
+import UserRepository from '../../repositories/auth/user.repository';
+import ValidationRepository from '../../repositories/auth/validation.repository';
 
 export enum LoginMessage {
   Success = 'Success',

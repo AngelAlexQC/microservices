@@ -18,6 +18,7 @@
     "@nrwl/jest": "14.4.3",
     "@nrwl/js": "14.4.3",
     "@nrwl/linter": "14.4.3",
+    "@nrwl/node": "14.4.3",
     "@nrwl/schematics": "^8.12.11",
     "@nrwl/workspace": "14.4.3",
     "@types/bcrypt": "^5.0.0",

@@ -1,4 +1,4 @@
-import User from 'domain/models/auth/user';
+import User from '../../models/auth/user';
 import UserRepository from './user.repository';
 
 export default interface ValidationRepository extends UserRepository {

@@ -1,4 +1,4 @@
-import User from 'domain/models/auth/user';
+import User from '../../models/auth/user';
 import AbstractRepository from '../abstract.repository';
 
 export default interface UserRepository extends AbstractRepository<User> {

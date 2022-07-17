@@ -1,5 +1,5 @@
-import Session from 'domain/models/auth/session';
-import SessionRepository from 'domain/repositories/auth/session.repository';
+import Session from '../../models/auth/session';
+import SessionRepository from '../../repositories/auth/session.repository';
 
 export const getUserByToken =
   (sessionRepository: SessionRepository) =>

@@ -1,18 +1,6 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "config/*": [
-        "src/config/*"
-      ],
-      "domain/*": [
-        "src/domain/*"
-      ],
-      "infrastructure/*": [
-        "src/infrastructure/*"
-      ],
-    },
     "module": "commonjs",
     "forceConsistentCasingInFileNames": true,
     "strict": true,

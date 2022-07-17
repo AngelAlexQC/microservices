@@ -1,4 +1,4 @@
-import { CONTEXT } from 'domain/contexts/contexts';
+import { CONTEXT } from '../../contexts/contexts';
 
 export default interface Permission {
   name: string;

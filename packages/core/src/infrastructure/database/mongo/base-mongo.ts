@@ -1,7 +1,7 @@
-import { mongoUrl, mongoAuthDbName } from 'config/auth';
-import { isProduction } from 'config/common';
-import AbstractRepository from 'domain/repositories/abstract.repository';
 import mongoose, { Model, Schema, model } from 'mongoose';
+import { mongoUrl, mongoAuthDbName } from '../../../config/auth';
+import { isProduction } from '../../../config/common';
+import AbstractRepository from '../../../domain/repositories/abstract.repository';
 
 export default class BaseMongo<T> implements AbstractRepository<T> {
   private baseModel: Model<T>;
