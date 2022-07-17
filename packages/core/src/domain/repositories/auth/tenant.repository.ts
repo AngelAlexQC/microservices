@@ -1,4 +1,4 @@
-import Tenant from '../../models/auth/tenant';
+import Tenant from 'domain/models/auth/tenant';
 import AbstractRepository from '../abstract.repository';
 
 export default interface TenantRepository extends AbstractRepository<Tenant> {

@@ -1,8 +1,8 @@
-import Session from '../../models/auth/session';
-import User from '../../models/auth/user';
-import SessionRepository from '../../repositories/session.repository';
-import UserRepository from '../../repositories/user.repository';
-import ValidationRepository from '../../repositories/validation.repository';
+import Session from 'domain/models/auth/session';
+import User from 'domain/models/auth/user';
+import SessionRepository from 'domain/repositories/auth/session.repository';
+import UserRepository from 'domain/repositories/auth/user.repository';
+import ValidationRepository from 'domain/repositories/auth/validation.repository';
 import getUserByCredentials from './get-user-by-credentials';
 
 export const login =

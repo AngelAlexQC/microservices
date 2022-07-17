@@ -1,6 +1,6 @@
-import UserRepository from '../../repositories/user.repository';
-import User from '../../models/auth/user';
-import ValidationRepository from '../../repositories/validation.repository';
+import User from 'domain/models/auth/user';
+import UserRepository from 'domain/repositories/auth/user.repository';
+import ValidationRepository from 'domain/repositories/auth/validation.repository';
 
 export enum LoginMessage {
   Success = 'Success',
@@ -17,7 +17,7 @@ export const getUserByCredentials =
     if (!user) {
       throw new Error(LoginMessage.InvalidCredentials);
     }
-    if (!(await validationRepository.validatePassword(password))) {
+    if (!(await validationRepository.validatePassword(email, password))) {
       throw new Error(LoginMessage.InvalidCredentials);
     }
     return user;

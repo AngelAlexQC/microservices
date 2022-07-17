@@ -1,7 +1,7 @@
-import User, { Name } from '../../models/auth/user';
-import RoleRepository from '../../repositories/auth/role.repository';
-import UserRepository from '../../repositories/auth/user.repository';
-import ValidationRepository from '../../repositories/validation.repository';
+import User, { Name } from 'domain/models/auth/user';
+import RoleRepository from 'domain/repositories/auth/role.repository';
+import UserRepository from 'domain/repositories/auth/user.repository';
+import ValidationRepository from 'domain/repositories/auth/validation.repository';
 
 export const createNewUser =
   (
@@ -15,13 +15,22 @@ export const createNewUser =
     password: string,
   ): Promise<User> => {
     const passwordHash = await validationRepository.createPasswordHash(
+      email,
       password,
     );
     const userRole = await roleRepository.getByName('user');
-    return userRepository.create({
-      name,
-      password: passwordHash,
+    const newName =
+      typeof name === 'string'
+        ? {
+            first: name,
+            last: '',
+          }
+        : name;
+    const newUser = await userRepository.create({
       email,
+      name: newName,
+      password: passwordHash,
       roles: [userRole],
     });
+    return newUser;
   };

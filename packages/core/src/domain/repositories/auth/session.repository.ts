@@ -1,4 +1,4 @@
-import Session from '../../models/auth/session';
+import Session from 'domain/models/auth/session';
 import AbstractRepository from '../abstract.repository';
 
 export default interface SessionRepository extends AbstractRepository<Session> {
