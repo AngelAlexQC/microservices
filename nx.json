@@ -28,5 +28,5 @@
     "appsDir": "apps",
     "libsDir": "packages"
   },
-  "defaultProject": "auth-service"
+  "defaultProject": "gateway-service"
 }

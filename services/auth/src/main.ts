@@ -3,12 +3,14 @@ import {
   connect,
   loginHandler,
   registerHandler,
+  setupLogging,
 } from '@aquirozdev/core';
 import { json, urlencoded } from 'body-parser';
 import * as cors from 'cors';
 import * as express from 'express';
 
 const app = express();
+setupLogging(app);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());

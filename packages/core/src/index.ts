@@ -12,3 +12,4 @@ export {
 export * from './config/auth';
 export * from './config/common';
 export * from './config/gateway';
+export * from './config/logging';
