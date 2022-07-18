@@ -1,11 +1,13 @@
 import { Request, Response } from 'express';
 import { isProduction } from '../../../config/common';
 import login from '../../../domain/interactors/auth/login';
+import RoleMongo from '../../database/mongo/role-mongo';
 import SessionMongo from '../../database/mongo/session-mongo';
 import UserMongo from '../../database/mongo/user-mongo';
 import ValidationMongo from '../../database/mongo/validation-mongo';
 
 export default async function loginHandler(req: Request, res: Response) {
+  new RoleMongo();
   const userRepository = new UserMongo();
   const validationRepository = new ValidationMongo();
   const sessionRepository = new SessionMongo();

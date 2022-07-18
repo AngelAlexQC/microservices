@@ -2,7 +2,9 @@
   "name": "microservices",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "dev": "nx run-many --target=serve --all=true"
+  },
   "private": true,
   "dependencies": {
     "bcrypt": "^5.0.1",

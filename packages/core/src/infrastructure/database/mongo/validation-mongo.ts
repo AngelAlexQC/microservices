@@ -1,5 +1,6 @@
 import { compareSync, genSaltSync, hashSync } from 'bcrypt';
 import { sign, verify } from 'jsonwebtoken';
+import { JWTSecret } from '../../../config/auth';
 import User from '../../../domain/models/auth/user';
 import ValidationRepository from '../../../domain/repositories/auth/validation.repository';
 import UserMongo from './user-mongo';
@@ -8,7 +9,6 @@ export default class ValidationMongo
   extends UserMongo
   implements ValidationRepository
 {
-  private secret = process.env['JWT_SECRET'] || 'secret';
   async validatePassword(email: string, password: string): Promise<boolean> {
     const user = await this.getByEmail(email);
     if (!user || !password) {
@@ -33,11 +33,11 @@ export default class ValidationMongo
     const options = {
       expiresIn: '1h',
     };
-    return sign(payload, this.secret, options);
+    return sign(payload, JWTSecret, options);
   }
   async validateJWT(jwt: string): Promise<boolean> {
     try {
-      const decoded = await verify(jwt, this.secret);
+      const decoded = await verify(jwt, JWTSecret);
       if (!decoded) {
         return false;
       }
@@ -54,6 +54,6 @@ export default class ValidationMongo
     const options = {
       expiresIn: '7d',
     };
-    return sign(payload, this.secret, options);
+    return sign(payload, JWTSecret, options);
   }
 }

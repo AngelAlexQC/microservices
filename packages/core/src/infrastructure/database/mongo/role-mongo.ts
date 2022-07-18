@@ -1,4 +1,4 @@
-import { PERMISSIONS } from '../../../domain/models/auth/permission';
+//import { PERMISSIONS } from '../../../domain/models/auth/permission';
 import Role from '../../../domain/models/auth/role';
 import RoleRepository from '../../../domain/repositories/auth/role.repository';
 import { Schema } from 'mongoose';
@@ -16,11 +16,15 @@ export default class RoleMongo
           type: String,
           unique: true,
         },
+        permissions: {
+          required: true,
+          type: [String],
+          default: [],
+        },
       },
       { timestamps: true },
     );
     super(roleSchema, 'Role');
-    this.seed();
   }
 
   async getByName(name: string): Promise<Role> {
@@ -31,7 +35,7 @@ export default class RoleMongo
     return foundDocuments[0];
   }
 
-  seed = async (): Promise<Role[]> => {
+  /* seed = async (): Promise<Role[]> => {
     const roles = [
       {
         name: 'super-admin',
@@ -66,5 +70,5 @@ export default class RoleMongo
     });
 
     return roles as Role[];
-  };
+  }; */
 }
