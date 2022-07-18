@@ -9,11 +9,19 @@ services:
       - mongo:/data/db
     ports:
       - '27017:27017'
+    healthcheck:
+      test: ['CMD', 'mongo', '--eval', '"printjson(db.runCommand({ping: 1}))"']
+      interval: 10s
+      timeout: 1s
+      retries: 3
+
   auth-service:
     build:
       context: .
       dockerfile: services/auth/Dockerfile
     restart: always
+    volumes:
+      - auth:/dist/services/auth
     ports:
       - '3333:3333'
     environment:
@@ -25,6 +33,9 @@ services:
       - MONGO_AUTH_DB_NAME=auth
     depends_on:
       - mongo
+    healthcheck:
+      test: ['CMD', 'curl', '-s', 'http://auth-service:3333/health']
 
 volumes:
   mongo: {}
+  auth: {}
