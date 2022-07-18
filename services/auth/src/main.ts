@@ -17,7 +17,9 @@ app.use(urlencoded({ extended: true }));
 
 app.post('/login', loginHandler);
 app.post('/register', registerHandler);
-app.get('health', (req, res) => res.send('OK'));
+app
+  .get('/', (req, res) => res.send('OK'))
+  .get('/health', (req, res) => res.send('OK'));
 
 const port = authPort;
 const server = app.listen(port, () => {
