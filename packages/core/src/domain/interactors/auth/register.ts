@@ -1,7 +1,5 @@
-import Session from '../../models/auth/session';
 import User, { Name } from '../../models/auth/user';
 import RoleRepository from '../../repositories/auth/role.repository';
-import SessionRepository from '../../repositories/auth/session.repository';
 import UserRepository from '../../repositories/auth/user.repository';
 import ValidationRepository from '../../repositories/auth/validation.repository';
 import { createNewUser } from './create-new-user';
@@ -11,7 +9,6 @@ export const register =
     userRepository: UserRepository,
     validationRepository: ValidationRepository,
     roleRepository: RoleRepository,
-    sessionRepository: SessionRepository,
   ) =>
   async (
     name: string | Name,
@@ -20,7 +17,6 @@ export const register =
   ): Promise<{
     jwt: string;
     user: User;
-    session: Session;
   }> => {
     const user = await createNewUser(
       userRepository,
@@ -28,21 +24,11 @@ export const register =
       roleRepository,
     )(name, email, password);
 
-    const userId = user.id;
     const jwt = await validationRepository.createJWT(user);
-    const expiresAt = new Date(Date.now() + 1000 * 60 * 60);
-    const session = await sessionRepository.create({
-      expiresAt,
-      jwt,
-      userId: userId as string,
-      refreshToken: await validationRepository.createRefreshToken(user),
-      refreshTokenExpiresAt: new Date(0),
-    });
     delete user.password;
     return {
       jwt,
       user,
-      session,
     };
   };
 

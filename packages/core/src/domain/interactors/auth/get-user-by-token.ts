@@ -1,10 +1,10 @@
-import Session from '../../models/auth/session';
-import SessionRepository from '../../repositories/auth/session.repository';
+import User from '../../models/auth/user';
+import UserRepository from '../../repositories/auth/user.repository';
 
 export const getUserByToken =
-  (sessionRepository: SessionRepository) =>
-  async (token: string): Promise<Session> => {
-    const user = await sessionRepository.getByJWT(token);
+  (userRepository: UserRepository) =>
+  async (token: string): Promise<User> => {
+    const user = await userRepository.getUserByToken(token);
     return user;
   };
 

@@ -11,8 +11,8 @@ services:
       - '27017:27017'
     healthcheck:
       test: ['CMD', 'mongo', '--eval', '"printjson(db.runCommand({ping: 1}))"']
-      interval: 10s
-      timeout: 1s
+      interval: 60s
+      timeout: s
       retries: 3
 
   auth-service:

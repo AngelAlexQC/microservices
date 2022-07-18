@@ -27,6 +27,5 @@
   "workspaceLayout": {
     "appsDir": "apps",
     "libsDir": "packages"
-  },
-  "defaultProject": "gateway-service"
+  }
 }

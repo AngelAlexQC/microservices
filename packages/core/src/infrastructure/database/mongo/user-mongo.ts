@@ -2,6 +2,8 @@ import User, { Name } from '../../../domain/models/auth/user';
 import UserRepository from '../../../domain/repositories/auth/user.repository';
 import { Schema } from 'mongoose';
 import BaseMongo from './base-mongo';
+import { JWTSecret } from '../../../config/auth';
+import { verify } from 'jsonwebtoken';
 
 export default class UserMongo
   extends BaseMongo<User>
@@ -59,5 +61,26 @@ export default class UserMongo
       throw new Error(`User with name ${name} not found`);
     }
     return foundDocuments[0];
+  }
+
+  async getUserByToken(token: string): Promise<User> {
+    const decoded = verify(token, JWTSecret);
+    const { userId } = decoded as { userId: string };
+    const foundDocument = await this.getById(userId);
+    if (!foundDocument) {
+      throw new Error(`User with id ${userId} not found`);
+    }
+    return foundDocument;
+  }
+
+  override async getById(id: string): Promise<User> {
+    const foundDocument = await this.baseModel
+      .findOne({ id })
+      .populate('roles')
+      .exec();
+    if (!foundDocument) {
+      throw new Error(`User with id ${id} not found`);
+    }
+    return foundDocument.toObject();
   }
 }

@@ -6,15 +6,6 @@ export default class BaseMongo<T> implements AbstractRepository<T> {
   protected baseModel: Model<T>;
   private collectionName: string;
   constructor(schema: Schema, collectionName: string) {
-    // Add the id field
-    schema.add({
-      id: {
-        type: String,
-        required: true,
-        unique: true,
-        default: mongoose.Types.ObjectId,
-      },
-    });
     // Connect to MongoDB
     mongoose
       .connect(mongoUrl, {
@@ -28,6 +19,13 @@ export default class BaseMongo<T> implements AbstractRepository<T> {
     this.baseModel =
       mongoose.models[collectionName] || model<T>(collectionName, schema);
     this.collectionName = collectionName;
+    // On create, clone _id to id
+    this.baseModel.schema.pre('save', function (next) {
+      if (this._id) {
+        this.id = this._id;
+      }
+      next();
+    });
   }
 
   async getAll(): Promise<T[]> {

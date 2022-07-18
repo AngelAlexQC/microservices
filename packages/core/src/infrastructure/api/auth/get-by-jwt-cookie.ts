@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
+import { isProduction } from '../../../config/common';
 import getUserByToken from '../../../domain/interactors/auth/get-user-by-token';
-import SessionMongo from '../../database/mongo/session-mongo';
+import UserMongo from '../../database/mongo/user-mongo';
 export default async function getByJWTCookie(req: Request, res: Response) {
   // get jwt from cookies
   const { jwt } = req.cookies;
@@ -9,8 +10,8 @@ export default async function getByJWTCookie(req: Request, res: Response) {
       error: 'Invalid JWT',
     });
   }
-  const sessionRepository = new SessionMongo();
-  const getUserFn = getUserByToken(sessionRepository);
+  const userRepository = new UserMongo();
+  const getUserFn = getUserByToken(userRepository);
   const user = await getUserFn(jwt);
   if (!user) {
     return res.status(401).json({
@@ -18,5 +19,6 @@ export default async function getByJWTCookie(req: Request, res: Response) {
     });
   }
 
+  delete user.password;
   return res.json(user);
 }

@@ -15,7 +15,7 @@ export default class ValidationMongo
       if (!user || !password) {
         return false;
       }
-      const isValid = await compareSync(password, user.password as string);
+      const isValid = compareSync(password, user.password as string);
       if (!isValid) {
         return false;
       }
@@ -25,8 +25,8 @@ export default class ValidationMongo
     }
   }
   async createPasswordHash(email: string, password: string): Promise<string> {
-    const salt = await genSaltSync(10);
-    const hash = await hashSync(password, salt);
+    const salt = genSaltSync(10);
+    const hash = hashSync(password, salt);
     return hash;
   }
   async createJWT(user: User): Promise<string> {
@@ -41,7 +41,7 @@ export default class ValidationMongo
   }
   async validateJWT(jwt: string): Promise<boolean> {
     try {
-      const decoded = await verify(jwt, JWTSecret);
+      const decoded = verify(jwt, JWTSecret);
       if (!decoded) {
         return false;
       }

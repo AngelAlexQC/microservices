@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { isProduction } from '../../../config/common';
 import login from '../../../domain/interactors/auth/login';
 import RoleMongo from '../../database/mongo/role-mongo';
-import SessionMongo from '../../database/mongo/session-mongo';
 import UserMongo from '../../database/mongo/user-mongo';
 import ValidationMongo from '../../database/mongo/validation-mongo';
 
@@ -10,7 +9,6 @@ export default async function loginHandler(req: Request, res: Response) {
   new RoleMongo();
   const userRepository = new UserMongo();
   const validationRepository = new ValidationMongo();
-  const sessionRepository = new SessionMongo();
   if (!req.body) {
     return res.status(422).json({
       error: 'Email and password are required',
@@ -25,11 +23,7 @@ export default async function loginHandler(req: Request, res: Response) {
   }
 
   try {
-    const loginFunc = login(
-      userRepository,
-      validationRepository,
-      sessionRepository,
-    );
+    const loginFunc = login(userRepository, validationRepository);
     try {
       const { jwt, user } = await loginFunc(email, password);
 
@@ -46,7 +40,7 @@ export default async function loginHandler(req: Request, res: Response) {
         sameSite: 'lax',
         secure: isProduction,
       });
-
+      delete user.password;
       return res.json({
         jwt,
         user,
