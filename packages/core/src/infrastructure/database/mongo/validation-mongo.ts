@@ -10,15 +10,19 @@ export default class ValidationMongo
   implements ValidationRepository
 {
   async validatePassword(email: string, password: string): Promise<boolean> {
-    const user = await this.getByEmail(email);
-    if (!user || !password) {
+    try {
+      const user = await this.getByEmail(email);
+      if (!user || !password) {
+        return false;
+      }
+      const isValid = await compareSync(password, user.password as string);
+      if (!isValid) {
+        return false;
+      }
+      return true;
+    } catch (error) {
       return false;
     }
-    const isValid = await compareSync(password, user.password as string);
-    if (!isValid) {
-      return false;
-    }
-    return true;
   }
   async createPasswordHash(email: string, password: string): Promise<string> {
     const salt = await genSaltSync(10);

@@ -30,30 +30,36 @@ export default async function loginHandler(req: Request, res: Response) {
       validationRepository,
       sessionRepository,
     );
-    const { jwt, user } = await loginFunc(email, password);
+    try {
+      const { jwt, user } = await loginFunc(email, password);
 
-    // Set cookies
-    res.cookie('jwt', jwt, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60,
-      sameSite: 'lax',
-      secure: isProduction,
-    });
-    res.cookie('user', user, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60,
-      sameSite: 'lax',
-      secure: isProduction,
-    });
+      // Set cookies
+      res.cookie('jwt', jwt, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60,
+        sameSite: 'lax',
+        secure: isProduction,
+      });
+      res.cookie('user', user, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60,
+        sameSite: 'lax',
+        secure: isProduction,
+      });
 
-    return res.json({
-      jwt,
-      user,
-    });
+      return res.json({
+        jwt,
+        user,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(401).json({
+        error: 'Invalid email or password',
+      });
+    }
   } catch (error) {
-    console.error(error);
-    return res.status(401).json({
-      error: 'Invalid email or password',
+    return res.status(500).json({
+      error,
     });
   }
 }

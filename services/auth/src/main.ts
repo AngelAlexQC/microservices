@@ -1,4 +1,9 @@
-import { authPort, loginHandler, registerHandler } from '@aquirozdev/core';
+import {
+  authPort,
+  connect,
+  loginHandler,
+  registerHandler,
+} from '@aquirozdev/core';
 import { json, urlencoded } from 'body-parser';
 import * as cors from 'cors';
 import * as express from 'express';
@@ -16,5 +21,6 @@ app.post('/register', registerHandler);
 const port = authPort;
 const server = app.listen(port, () => {
   console.log(`Auth Service listening at http://localhost:${port}`);
+  connect('auth');
 });
 server.on('error', console.error);
