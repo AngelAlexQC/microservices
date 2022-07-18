@@ -6,9 +6,9 @@ export interface Name {
 }
 
 export default interface User {
-  id: number;
+  id: string;
   name: Name | string;
   email: string;
-  password: string | null;
+  password?: string | null;
   roles: Role[];
 }

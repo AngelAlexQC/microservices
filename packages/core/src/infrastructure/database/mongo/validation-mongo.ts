@@ -1,8 +1,8 @@
+import { compareSync, genSaltSync, hashSync } from 'bcrypt';
+import { sign, verify } from 'jsonwebtoken';
 import User from '../../../domain/models/auth/user';
 import ValidationRepository from '../../../domain/repositories/auth/validation.repository';
 import UserMongo from './user-mongo';
-import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
 
 export default class ValidationMongo
   extends UserMongo
@@ -11,27 +11,49 @@ export default class ValidationMongo
   private secret = process.env['JWT_SECRET'] || 'secret';
   async validatePassword(email: string, password: string): Promise<boolean> {
     const user = await this.getByEmail(email);
-
-    if (!user) {
+    if (!user || !password) {
       return false;
     }
-
-    const isValid = await bcrypt.compare(password, user.password as string);
-    return isValid ? true : false;
+    const isValid = await compareSync(password, user.password as string);
+    if (!isValid) {
+      return false;
+    }
+    return true;
   }
-  async createPasswordHash(password: string): Promise<string> {
-    return bcrypt.hash(password, 10);
+  async createPasswordHash(email: string, password: string): Promise<string> {
+    const salt = await genSaltSync(10);
+    const hash = await hashSync(password, salt);
+    return hash;
   }
   async createJWT(user: User): Promise<string> {
-    return jwt.sign({ user }, this.secret);
+    const payload = {
+      email: user.email,
+      id: user.id,
+    };
+    const options = {
+      expiresIn: '1h',
+    };
+    return sign(payload, this.secret, options);
   }
-
-  async validateJWT(jwtToken: string): Promise<boolean> {
+  async validateJWT(jwt: string): Promise<boolean> {
     try {
-      jwt.verify(jwtToken, this.secret);
+      const decoded = await verify(jwt, this.secret);
+      if (!decoded) {
+        return false;
+      }
       return true;
     } catch (error) {
       return false;
     }
+  }
+  async createRefreshToken(user: User): Promise<string> {
+    const payload = {
+      email: user.email,
+      id: user.id,
+    };
+    const options = {
+      expiresIn: '7d',
+    };
+    return sign(payload, this.secret, options);
   }
 }

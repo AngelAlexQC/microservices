@@ -28,9 +28,14 @@ export default class UserMongo
         password: {
           required: true,
           type: String,
-          select: false,
         },
         name: nameSchema,
+        roles: [
+          {
+            type: Schema.Types.ObjectId,
+            ref: 'Role',
+          },
+        ],
       },
       { timestamps: true },
     );
@@ -38,11 +43,14 @@ export default class UserMongo
   }
 
   async getByEmail(email: string): Promise<User> {
-    const foundDocuments = await this.getBy({ email });
-    if (!foundDocuments || foundDocuments.length === 0) {
+    const foundDocument = await this.baseModel
+      .findOne({ email })
+      .populate('roles')
+      .exec();
+    if (!foundDocument) {
       throw new Error(`User with email ${email} not found`);
     }
-    return foundDocuments[0];
+    return foundDocument;
   }
 
   async getByName(name: string): Promise<User> {

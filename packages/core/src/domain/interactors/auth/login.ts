@@ -1,4 +1,3 @@
-import Session from '../../models/auth/session';
 import User from '../../models/auth/user';
 import SessionRepository from '../../repositories/auth/session.repository';
 import UserRepository from '../../repositories/auth/user.repository';
@@ -17,26 +16,25 @@ export const login =
   ): Promise<{
     jwt: string;
     user: User;
-    session: Session;
   }> => {
-    const user = await getUserByCredentials(
-      userRepository,
-      validationRepository,
-    )(email, password);
+    const user = await getUserByCredentials(userRepository)(email, password);
     const userId = user.id;
     const jwt = await validationRepository.createJWT(user);
-    const expiresAt = new Date(Date.now() + 1000 * 60 * 60);
-    const session = await sessionRepository.create({
+    const expiresAt = new Date(new Date().getTime() + 1000 * 60 * 60);
+    const expiresAtRefreshToken = new Date(
+      new Date().getTime() + 1000 * 60 * 60 * 7,
+    );
+    await sessionRepository.create({
       expiresAt,
       jwt,
-      userId: userId.toString(),
-      refreshToken: '',
-      refreshTokenExpiresAt: new Date(0),
+      userId: userId as string,
+      refreshToken: await validationRepository.createRefreshToken(user),
+      refreshTokenExpiresAt: expiresAtRefreshToken,
     });
+    delete user.password;
     return {
       jwt,
       user,
-      session,
     };
   };
 

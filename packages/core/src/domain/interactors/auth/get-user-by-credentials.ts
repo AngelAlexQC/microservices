@@ -1,6 +1,6 @@
+import { compare } from 'bcrypt';
 import User from '../../models/auth/user';
 import UserRepository from '../../repositories/auth/user.repository';
-import ValidationRepository from '../../repositories/auth/validation.repository';
 
 export enum LoginMessage {
   Success = 'Success',
@@ -8,18 +8,18 @@ export enum LoginMessage {
 }
 
 export const getUserByCredentials =
-  (
-    userRepository: UserRepository,
-    validationRepository: ValidationRepository,
-  ) =>
+  (userRepository: UserRepository) =>
   async (email: string, password: string): Promise<User> => {
     const user = await userRepository.getByEmail(email);
-    if (!user) {
+    if (!user || !password) {
       throw new Error(LoginMessage.InvalidCredentials);
     }
-    if (!(await validationRepository.validatePassword(email, password))) {
+    const isValid = await compare(password, user.password as string);
+
+    if (!isValid) {
       throw new Error(LoginMessage.InvalidCredentials);
     }
+    delete user.password;
     return user;
   };
 

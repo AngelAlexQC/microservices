@@ -6,4 +6,5 @@ export default interface ValidationRepository extends UserRepository {
   createPasswordHash(email: string, password: string): Promise<string>;
   createJWT(user: User): Promise<string>;
   validateJWT(jwt: string): Promise<boolean>;
+  createRefreshToken(user: User): Promise<string>;
 }

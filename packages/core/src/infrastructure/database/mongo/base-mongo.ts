@@ -1,23 +1,28 @@
 import mongoose, { Model, Schema, model } from 'mongoose';
 import { mongoUrl, mongoAuthDbName } from '../../../config/auth';
-import { isProduction } from '../../../config/common';
 import AbstractRepository from '../../../domain/repositories/abstract.repository';
 
 export default class BaseMongo<T> implements AbstractRepository<T> {
-  private baseModel: Model<T>;
+  protected baseModel: Model<T>;
   private collectionName: string;
   constructor(schema: Schema, collectionName: string) {
+    // Add the id field
+    schema.add({
+      id: {
+        type: String,
+        required: true,
+        unique: true,
+        default: mongoose.Types.ObjectId,
+      },
+    });
     // Connect to MongoDB
     mongoose
       .connect(mongoUrl, {
         dbName: mongoAuthDbName,
       })
       .then(() => {
-        // Check environment variable for debug mode
-        if (!isProduction) {
-          // eslint-disable-next-line no-console
-          console.log('Connected to MongoDB, collection:', collectionName);
-        }
+        // eslint-disable-next-line no-console
+        console.log('Connected to MongoDB, collection:', collectionName);
       });
     // This is for not create duplicate instances of the same model
     this.baseModel =
@@ -34,7 +39,7 @@ export default class BaseMongo<T> implements AbstractRepository<T> {
   }
 
   async getById(id: string): Promise<T> {
-    const foundDocument = await this.baseModel.findById(id).exec();
+    const foundDocument = await this.baseModel.findOne({ id }).exec();
     if (!foundDocument) {
       throw new Error(
         `Document with id ${id} not found in ${this.collectionName}`,
@@ -80,14 +85,19 @@ export default class BaseMongo<T> implements AbstractRepository<T> {
   }
 
   async patch(id: string, object: Partial<Omit<T, 'id'>>): Promise<T> {
-    const updatedDocument = await this.baseModel
-      .findByIdAndUpdate(id, object)
-      .exec();
-    if (!updatedDocument) {
+    const document = await this.getById(id);
+    if (!document) {
       throw new Error(
         `Document with id ${id} not found in ${this.collectionName}`,
       );
     }
-    return updatedDocument.toObject();
+    const documentToUpdate = await this.baseModel.findOne({ id }).exec();
+    if (!documentToUpdate) {
+      throw new Error(
+        `Document with id ${id} not found in ${this.collectionName}`,
+      );
+    }
+    const updatedDocument = await documentToUpdate.update(object).exec();
+    return updatedDocument;
   }
 }

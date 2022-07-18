@@ -20,7 +20,7 @@ export default class RoleMongo
       { timestamps: true },
     );
     super(roleSchema, 'Role');
-    this.createDefaultRoles();
+    this.seed();
   }
 
   async getByName(name: string): Promise<Role> {
@@ -31,23 +31,40 @@ export default class RoleMongo
     return foundDocuments[0];
   }
 
-  private async createDefaultRoles() {
-    const superAdminRole = await this.getByName('super-admin');
-    if (!superAdminRole) {
-      await this.create({
+  seed = async (): Promise<Role[]> => {
+    const roles = [
+      {
         name: 'super-admin',
         permissions: PERMISSIONS,
         description: 'Super admin role',
-      });
-    }
-
-    const userRole = await this.getByName('user');
-    if (!userRole) {
-      await this.create({
+      },
+      {
+        name: 'admin',
+        permissions: PERMISSIONS,
+        description: 'Admin role',
+      },
+      {
         name: 'user',
         permissions: [],
         description: 'User role',
-      });
-    }
-  }
+      },
+    ];
+
+    roles.forEach(async (role) => {
+      try {
+        // Check if role exists
+        await this.getByName(role.name);
+      } catch (error) {
+        // Create role
+        await this.create({
+          name: role.name,
+          permissions: role.permissions,
+          description: role.description,
+          id: role.name,
+        });
+      }
+    });
+
+    return roles as Role[];
+  };
 }

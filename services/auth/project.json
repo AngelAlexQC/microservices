@@ -10,7 +10,8 @@
         "outputPath": "dist/services/auth",
         "main": "services/auth/src/main.ts",
         "tsConfig": "services/auth/tsconfig.app.json",
-        "assets": ["services/auth/src/assets"]
+        "assets": ["services/auth/src/assets"],
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {

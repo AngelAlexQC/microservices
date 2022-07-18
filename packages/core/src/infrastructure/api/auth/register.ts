@@ -10,6 +10,7 @@ export default async function registerHandler(req: Request, res: Response) {
   const userRepository = new UserMongo();
   const validationRepository = new ValidationMongo();
   const roleRepository = new RoleMongo();
+  await roleRepository.seed();
   const sessionRepository = new SessionMongo();
 
   const { name, email, password } = req.body;

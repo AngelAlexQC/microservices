@@ -9,16 +9,17 @@ export default async function loginHandler(req: Request, res: Response) {
   const userRepository = new UserMongo();
   const validationRepository = new ValidationMongo();
   const sessionRepository = new SessionMongo();
-  const requiredBody = res.status(422).json({
-    error: 'Email and password are required',
-  });
   if (!req.body) {
-    return requiredBody;
+    return res.status(422).json({
+      error: 'Email and password are required',
+    });
   }
 
   const { email, password } = req.body;
   if (!email || !password) {
-    return requiredBody;
+    return res.status(422).json({
+      error: 'Email and password are required',
+    });
   }
 
   try {
@@ -27,10 +28,10 @@ export default async function loginHandler(req: Request, res: Response) {
       validationRepository,
       sessionRepository,
     );
-    const { jwt, user, session } = await loginFunc(email, password);
+    const { jwt, user } = await loginFunc(email, password);
 
     // Set cookies
-    res.cookie('jwt', session.jwt, {
+    res.cookie('jwt', jwt, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60,
       sameSite: 'lax',
@@ -48,8 +49,9 @@ export default async function loginHandler(req: Request, res: Response) {
       user,
     });
   } catch (error) {
+    console.error(error);
     return res.status(401).json({
-      error,
+      error: 'Invalid email or password',
     });
   }
 }

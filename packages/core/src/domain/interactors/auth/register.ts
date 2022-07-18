@@ -34,10 +34,11 @@ export const register =
     const session = await sessionRepository.create({
       expiresAt,
       jwt,
-      userId: userId.toString(),
-      refreshToken: '',
+      userId: userId as string,
+      refreshToken: await validationRepository.createRefreshToken(user),
       refreshTokenExpiresAt: new Date(0),
     });
+    delete user.password;
     return {
       jwt,
       user,
