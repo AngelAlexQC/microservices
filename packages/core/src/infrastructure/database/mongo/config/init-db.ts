@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { mongoUrl } from '../../../../config/auth';
 
-export const connect = (dbName: string) => {
+export const connectToMongo = (dbName: string) => {
   mongoose
     .connect(mongoUrl, {
       dbName,
@@ -33,4 +33,4 @@ export const connect = (dbName: string) => {
   });
 };
 
-export default connect;
+export default connectToMongo;
