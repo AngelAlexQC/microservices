@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
-import { mongoUrl } from '../../../../config/auth';
 
-export const connectToMongo = (dbName: string) => {
+export const connectToMongo = (mongoUrl: string, dbName: string) => {
   mongoose
     .connect(mongoUrl, {
       dbName,

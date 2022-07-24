@@ -4,6 +4,7 @@ import {
   getByUserIdCookie as handleGetByUserIdCookie,
   jwtMiddleware,
   loginHandler,
+  mongoAuthUrl,
   registerHandler,
   setupApp,
 } from '@aquirozdev/core';
@@ -19,6 +20,6 @@ app.get('/me', jwtMiddleware, handleGetByUserIdCookie);
 
 const server = app.listen(port, () => {
   console.log(`Auth Service listening at http://localhost:${port}`);
-  connect('auth');
+  connect(mongoAuthUrl, 'auth');
 });
 server.on('error', console.error);

@@ -1,5 +1,5 @@
 import mongoose, { Model, Schema, model } from 'mongoose';
-import { mongoUrl, mongoAuthDbName } from '../../../config/auth';
+import { mongoAuthUrl, mongoAuthDbName } from '../../../config/auth';
 import AbstractRepository from '../../../domain/repositories/abstract.repository';
 
 export default class BaseMongo<T> implements AbstractRepository<T> {
@@ -8,7 +8,7 @@ export default class BaseMongo<T> implements AbstractRepository<T> {
   constructor(schema: Schema, collectionName: string) {
     // Connect to MongoDB
     mongoose
-      .connect(mongoUrl, {
+      .connect(mongoAuthUrl, {
         dbName: mongoAuthDbName,
       })
       .then(() => {
