@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { isProduction } from '../../../config/common';
 import getUserByToken from '../../../domain/interactors/auth/get-user-by-token';
 import UserMongo from '../../database/mongo/user-mongo';
 export default async function getByJWTCookie(req: Request, res: Response) {
